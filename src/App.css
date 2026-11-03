@@ -1,0 +1,140 @@
+/* src/App.css - styles de l'application GestiTicket (fourni)
+   ==========================================================
+   Cette feuille est importée dans App.jsx (import './App.css').
+   Avec Vite, importer un fichier CSS suffit pour l'appliquer à toute la page.
+   Rappel : en JSX, on applique une classe avec className="..." (pas class).
+
+   Ce fichier REMPLACE celui du kit précédent : les règles des TP
+   précédents sont conservées à l'identique, les nouvelles sont ajoutées
+   à la fin, dans une section repérée par le numéro du TP. */
+
+/* "*" sélectionne TOUS les éléments.
+   box-sizing: border-box → la largeur d'un élément INCLUT son padding et sa
+   bordure. Beaucoup plus simple pour calculer les dimensions. */
+* { box-sizing: border-box; }
+
+/* Styles de base de la page */
+body {
+  margin: 0;                     /* supprime la marge par défaut du navigateur */
+  /* Police "système" : celle du système d'exploitation, avec des polices de
+     secours si la première n'existe pas */
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background-color: #f4f6f8;     /* gris très clair */
+  color: #1f2933;                /* couleur du texte : gris foncé */
+}
+
+/* ---------- En-tête (composant Header) ---------- */
+.entete {
+  background-color: #1f2933;
+  color: #ffffff;
+  padding: 1rem 2rem;            /* 1rem en haut/bas, 2rem à gauche/droite */
+  /* FLEXBOX : place les enfants (h1 et span) côte à côte */
+  display: flex;
+  justify-content: space-between; /* h1 à gauche, span à droite */
+  align-items: baseline;          /* aligne les textes sur leur ligne de base */
+}
+
+/* Sélecteur descendant : un h1 situé DANS un élément .entete */
+.entete h1 { margin: 0; font-size: 1.4rem; }
+.entete span { opacity: 0.7; font-size: 0.9rem; } /* sous-titre un peu estompé */
+
+/* ---------- Zone principale (<main className="contenu">) ---------- */
+/* max-width + margin auto → contenu centré, largeur limitée à 720px */
+.contenu { max-width: 720px; margin: 1.5rem auto; padding: 0 1rem; }
+
+/* ---------- Carte d'un ticket (composant TicketCard) ---------- */
+.carte-ticket {
+  background-color: #ffffff;
+  border-radius: 8px;            /* coins arrondis */
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;        /* espace entre deux cartes */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); /* ombre légère */
+}
+
+.carte-ticket h3 { margin: 0 0 0.5rem; font-size: 1.05rem; }
+
+/* Ligne d'infos : badge + statut côte à côte (flexbox), espacés de 0.5rem */
+.carte-infos {
+  margin: 0;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Badge en forme de "pilule" (border-radius très grand) */
+.badge {
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
+/* Couleur du badge selon le niveau d'urgence de la categorie
+   Ces classes sont construites DYNAMIQUEMENT dans TicketCard.jsx :
+     className={`badge urgence-${urgence}`}  → ex : "badge urgence-4"
+   Le CSS associe une couleur à chaque niveau, sans aucun if en JavaScript. */
+.urgence-1 { background-color: #6c757d; } /* gris   : faible   */
+.urgence-2 { background-color: #0d6efd; } /* bleu   : moyenne  */
+.urgence-3 { background-color: #fd7e14; } /* orange : élevée   */
+.urgence-4 { background-color: #dc3545; } /* rouge  : critique */
+
+/* Statut du ticket, même principe : classe "statut statut-<valeur>".
+   Il n'y a pas de règle .statut-nouveau : un ticket "nouveau" garde donc
+   simplement le style de base .statut */
+.statut { font-size: 0.85rem; color: #52606d; }
+.statut-resolu { color: #198754; font-weight: 600; }   /* vert, semi-gras   */
+.statut-en_cours { color: #fd7e14; font-weight: 600; } /* orange, semi-gras */
+
+/* ============================================================
+   AJOUTS DU TP5 : compteur, messages, barre de filtres
+   ============================================================ */
+
+/* Bouton du composant Compteur (partie 1, temporaire) */
+.compteur {
+  padding: 0.4rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cbd2d9;
+  border-radius: 6px;
+  background-color: #ffffff;
+  cursor: pointer;               /* curseur "main" : l'élément est cliquable */
+}
+
+/* Message neutre : "Chargement des tickets…", "Aucun ticket…" */
+.info { color: #52606d; font-style: italic; }
+
+/* Message d'erreur : fond rose pâle, texte rouge foncé */
+.erreur {
+  background-color: #fdecec;
+  color: #b42318;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+/* Barre de filtres (composant FiltreCategories) : boutons côte à côte,
+   qui passent à la ligne s'il n'y a plus de place (flex-wrap) */
+.filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Un bouton de filtre "au repos" */
+.filtre {
+  border: 1px solid #cbd2d9;
+  background-color: #ffffff;
+  color: #1f2933;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.filtre:hover { background-color: #f0f3f6; }   /* survol de la souris */
+
+/* Le bouton du filtre ACTIF porte les DEUX classes : className="filtre actif"
+   Le sélecteur .filtre.actif (sans espace) cible exactement ce cas. */
+.filtre.actif {
+  background-color: #1f2933;
+  color: #ffffff;
+  border-color: #1f2933;
+}
